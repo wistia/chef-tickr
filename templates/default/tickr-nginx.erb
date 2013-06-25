@@ -1,0 +1,20 @@
+upstream tickr_server {
+  server unix:<%= @socket_path %> fail_timeout=0;
+}
+
+server {
+  server_name tickr;
+  root <%= @app_dir %>;
+  listen 80;
+  keepalive_timeout 5;
+  location / {
+    try_files $uri @tickr_app;
+  }
+
+  location @tickr_app {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_pass http://tickr_server;
+  }
+}

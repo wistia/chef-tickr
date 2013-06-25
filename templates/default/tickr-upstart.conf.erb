@@ -1,0 +1,8 @@
+#!upstart
+description "Tickr Web Server"
+
+start on startup
+stop on shutdown
+
+exec sudo -u root sh -c "<%= @cmd %>"
+respawn
