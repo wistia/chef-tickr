@@ -42,7 +42,7 @@ DEPLOY_DIR = '/opt/deploys/tickr'
 
 application 'tickr' do
   path DEPLOY_DIR
-  repository 'git@github.com:wistia/tickr.git'
+  repository 'git@github.com:wistia/tickr-server.git'
   revision 'master'
   deploy_key node['tickr']['deploy_private_key']
 end
