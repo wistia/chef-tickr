@@ -35,7 +35,8 @@ TICKR_ENV = {
   'TICKR_DATABASE_POOL_TIMEOUT' => '5',
   'TICKR_MAX_NODES' => node['tickr']['max_nodes'].to_s,
   'TICKR_STARTING_OFFSET' => node['tickr']['starting_offset'].to_s,
-  'TICKR_NODE_NUMBER' => node['tickr']['node_number'].to_s
+  'TICKR_NODE_NUMBER' => node['tickr']['node_number'].to_s,
+  'TICKR_HTTP_AUTH_PASSWORD' => node['tickr']['http_auth_password'].to_s
 }
 
 DEPLOY_DIR = '/opt/deploys/tickr'

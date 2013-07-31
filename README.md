@@ -25,5 +25,6 @@ your environment's node_number_mappings hash.
 cluster.
 * `starting_offset`: The first ID that you would like your tickr cluster to
 provide.
+* `http_auth_password`: The password to use for HTTP authentication, if any.
 
 # Recipes
