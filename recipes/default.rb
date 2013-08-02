@@ -8,6 +8,9 @@ include_recipe 'apt'
 
 # Install mysql
 include_recipe 'mysql::server'
+# For some reason if we don't set this, it gets left blank on Ubuntu 12.04 on
+# Rackspace. Probably a bug in the way the local NIC gets queried.
+node.default['mysql']['bind_address'] = '127.0.0.1'
 
 # Install git for application deploys
 include_recipe 'git'
