@@ -49,6 +49,10 @@ application 'tickr' do
   repository 'git@github.com:wistia/tickr-server.git'
   revision 'master'
   deploy_key node['tickr']['deploy_private_key']
+
+  notifies :restart, 'service[tickr]'
+
+  action :deploy
 end
 
 node.default[:unicorn][:worker_timeout] = 60
@@ -74,6 +78,8 @@ unicorn_config '/etc/unicorn/tickr.rb' do
   pid UNICORN_PID_PATH
   stderr_path "#{LOG_DIR}/unicorn.stderr.log"
   stdout_path "#{LOG_DIR}/unicorn.stdout.log"
+
+  notifies :restart, 'service[tickr]'
 end
 
 BIN_PATH = '/opt/chef/embedded/bin'
@@ -96,8 +102,8 @@ end
 
 service 'tickr' do
   provider Chef::Provider::Service::Upstart
-  subscribes :restart, resources(application: 'tickr')
-  supports :restart => true, :start => true, :stop => true
+  supports restart: true, start: true, stop: true, status: true
+  action [:enable, :start]
 end
 
 template 'tickr-upstart' do
@@ -109,11 +115,8 @@ template 'tickr-upstart' do
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :restart, resources(service: 'tickr')
-end
 
-service 'tickr' do
-  action [:enable, :start]
+  notifies :restart, 'service[tickr]'
 end
 
 nginx_site 'default' do
@@ -130,9 +133,13 @@ template 'tickr-nginx' do
   owner 'root'
   group 'root'
   mode 0644
+
+  notifies :restart, 'service[nginx]'
 end
 
 nginx_site 'tickr' do
   enable true
+
+  notifies :restart, 'service[nginx]'
 end
 
