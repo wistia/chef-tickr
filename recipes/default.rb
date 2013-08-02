@@ -50,7 +50,7 @@ application 'tickr' do
   revision 'master'
   deploy_key node['tickr']['deploy_private_key']
 
-  notifies :restart, 'service[tickr]'
+  notifies :restart, 'service[tickr]' # This is broken. Tickr does not get notified on app deploy.
 
   action :deploy
 end
