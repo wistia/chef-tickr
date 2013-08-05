@@ -56,6 +56,7 @@ application 'tickr' do
 end
 
 node.default[:unicorn][:worker_timeout] = 60
+
 node.default[:unicorn][:preload_app] = false
 node.default[:unicorn][:worker_processes] = [node[:cpu][:total].to_i * 4, 8].min
 node.default[:unicorn][:preload_app] = false
@@ -143,3 +144,7 @@ nginx_site 'tickr' do
   notifies :restart, 'service[nginx]'
 end
 
+# Restart tickr manually because the tickr application LWRP notifier does not work.
+service 'tickr' do
+  action :restart
+end
